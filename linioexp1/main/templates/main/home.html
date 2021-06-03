@@ -1,3 +1,35 @@
-<h1> Linio Express </h1>
-<hr>
-<a href="{% url 'product-list' %}">Productos</a>
+{% extends "base.html" %}
+
+{% block content %}
+    {% if user.is_authenticated %}
+    <h2> ¡Bienvenido/a, {{  user.get_username }}! </h2>
+    <p>
+      <a href="{% url 'logout' %}">Cierra Sesion</a>
+    </p>
+    {% else %}
+    <h2> ¡Bienvenido/a! </h2>
+    <p>
+      <a href="{% url 'login' %}">Inicia Sesion</a> o
+      <a href="{% url 'register' %}">Registrate</a>
+    </p>
+    {% endif %}
+
+    <hr>
+    <h4> ¡Ultimos Lanzamientos! </h4>
+    <ul>
+      {% for producto in latest_products %}
+        <li>
+          <a href="{% url 'product-detail' producto.pk %}">
+            {{ producto.nombre }}
+          </a>
+          - {{ producto.precio }}
+        </li>
+      {% empty %}
+        <li>Aun no hay productos disponibles.</li>
+      {% endfor %}
+    </ul>
+    <hr>
+
+    <a href="{% url 'product-list' %}">Lista de Productos</a>
+
+{% endblock %}

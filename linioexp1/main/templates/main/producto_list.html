@@ -5,9 +5,12 @@
     <title> LinioExp </title>
   </head>
   <body>
-    <h1> LinioExp </h1>
+    <h1> LINIO EXPRESS </h1>
+    {% if user.is_authenticated %}
+    <h4> ¡Bienvenido/a, {{  user.get_username }}! </h4>
+    {% endif %}
     <hr>
-    <h3> Productos </h3>
+    <h2> Productos </h2>
     <ul>
       {% for producto in object_list %}
         <li>
@@ -21,8 +24,8 @@
       {% endfor %}
     </ul>
     <hr>
-    <ul>
-      <li> <a href="{% url 'home' %}">Inicio</a> </li>
-    </ul>
+
+    <a href="{% url 'home' %}">Volver a inicio</a>
+
   </body>
 </html>

@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
 class Producto(models.Model):
@@ -22,22 +23,34 @@ class Producto(models.Model):
         codigo_producto = str(self.id).zfill(6)
         return f'{codigo_categoria}-{codigo_producto}'
 
+    def __str__(self):
+        return self.nombre
+
 class Proveedor(models.Model):
     # Atributos
     ruc = models.CharField(max_length=11)
     razon_social = models.CharField(max_length=20)
     telefono = models.CharField(max_length=9)
 
+    def __str__(self):
+        return self.razon_social
+
 class Categoria(models.Model):
     # Atributos
     codigo = models.CharField(max_length=4)
     nombre = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.nombre
 
 class Localizacion(models.Model):
     # Atributos
     distrito = models.CharField(max_length=20)
     provincia = models.CharField(max_length=20)
     departamento = models.CharField(max_length=20)
+
+    def __str__(self):
+        return self.distrito
 
 class Pedido(models.Model):
     # Relaciones
@@ -63,3 +76,47 @@ class DetallePedido(models.Model):
     # Metodos
     def subtotal_final(self):
         return self.cantidad * self.producto.precio
+
+class Profile(models.Model):
+    # Relacion con el modelo User de Django
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+
+    # Atributos adicionales para el usuario
+    documento_identidad = models.CharField(max_length=8)
+    fecha_nacimiento = models.DateField()
+    estado = models.CharField(max_length=3)
+
+    ## Opciones de genero
+    MASCULINO = 'MA'
+    FEMENINO = 'FE'
+    NO_BINARIO = 'NB'
+    GENERO_CHOICES = [
+        (MASCULINO, 'Masculino'),
+        (FEMENINO, 'Femenino'),
+        (NO_BINARIO, 'No Binario')
+    ]
+    genero = models.CharField(max_length=2, choices=GENERO_CHOICES)
+
+    def __str__(self):
+        return self.user.get_username()
+
+class Cliente(models.Model):
+    # Relacion con el modelo Perfil
+    user_profile = models.OneToOneField(Profile, on_delete=models.CASCADE)
+
+    # Atributos especificos del Cliente
+    preferencias = models.ManyToManyField(to='Categoria')
+
+    def __str__(self):
+        return f'Cliente: {self.user_profile.user.get_username()}'
+
+class Colaborador(models.Model):
+    # Relacion con el modelo Perfil
+    user_profile = models.OneToOneField(Profile, on_delete=models.CASCADE)
+
+    # Atributos especificos del Colaborador
+    reputacion = models.FloatField()
+    cobertura_entrega = models.ManyToManyField(to='Localizacion')
+
+    def __str__(self):
+        return f'Colaborador: {self.user_profile.user.get_username()}'
