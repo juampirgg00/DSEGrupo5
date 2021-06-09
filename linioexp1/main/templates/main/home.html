@@ -2,20 +2,31 @@
 
 {% block content %}
     {% if user.is_authenticated %}
-    <h2> ¡Bienvenido/a, {{  user.get_username }}! </h2>
+    <h1 class="title is-3"> ¡Bienvenido/a, {{  user.get_username }}! </h1>
     <p>
-      <a href="{% url 'logout' %}">Cierra Sesion</a>
+      <a href="{% url 'logout' %}">Cierra Sesión</a>
     </p>
     {% else %}
-    <h2> ¡Bienvenido/a! </h2>
+    <h1 class="title is-3"> ¡Bienvenido/a! </h1>
     <p>
-      <a href="{% url 'login' %}">Inicia Sesion</a> o
-      <a href="{% url 'register' %}">Registrate</a>
+      <a href="{% url 'login' %}">Inicia Sesión</a> o
+      <a href="{% url 'register' %}">Regístrate</a>
     </p>
     {% endif %}
 
     <hr>
-    <h4> ¡Ultimos Lanzamientos! </h4>
+
+    {% if messages %}
+        {% for message in messages %}
+        <div class="notification {% if message.tags %}is-{{ message.tags }}{% endif %}">
+            <button class="delete"></button>
+            {{ message }}
+        </div>
+        {% endfor %}
+        <hr>
+    {% endif %}
+
+    <p><u><h1 class="title is-5"> Últimos Lanzamientos: </h1></u></p>
     <ul>
       {% for producto in latest_products %}
         <li>
@@ -28,8 +39,10 @@
         <li>Aun no hay productos disponibles.</li>
       {% endfor %}
     </ul>
+
     <hr>
 
-    <a href="{% url 'product-list' %}">Lista de Productos</a>
+
+    <u><h1 class="title is-5"> <a href="{% url 'product-list' %}">Lista de Productos</a> </h1></u>
 
 {% endblock %}

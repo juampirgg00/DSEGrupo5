@@ -15,7 +15,7 @@ class Producto(models.Model):
     descuento = models.FloatField(default=0)
 
     # Metodos
-    def precio_final(self):
+    def get_precio_final(self):
         return self.precio * (1 - self.descuento)
 
     def sku(self):
@@ -54,28 +54,41 @@ class Localizacion(models.Model):
 
 class Pedido(models.Model):
     # Relaciones
+    cliente = models.ForeignKey('Cliente', on_delete=models.CASCADE, null=True)
+    repartidor = models.ForeignKey('Colaborador', on_delete=models.SET_NULL, null=True)
     ubicacion = models.ForeignKey('Localizacion', on_delete=models.SET_NULL, null=True)
 
     # Atributos
-    fechaCreacion = models.DateField()
-    estado = models.CharField(max_length=20)
-    fechaEntrega = models.DateField()
-    direccionEntrega = models.CharField(max_length=20)
-    repartidor = models.CharField(max_length=20)
-    tarifa = models.FloatField()
+    fecha_creacion = models.DateTimeField(auto_now=True)
+    fecha_entrega = models.DateTimeField(blank=True, null=True)
+    estado = models.CharField(max_length=3)
+    direccion_entrega = models.CharField(max_length=100, blank=True, null=True)
+    tarifa = models.FloatField(blank=True, null=True)
+
+    def __str__(self):
+        return f'{self.cliente} - {self.fecha_creacion} - {self.estado}'
+
+    def get_total(self):
+        detalles = self.detallepedido_set.all()
+        total = 0
+        for detalle in detalles:
+            total += detalle.get_subtotal()
+        total += self.tarifa
+        return total
 
 class DetallePedido(models.Model):
     # Relaciones
-    producto = models.ForeignKey('Producto', on_delete=models.SET_NULL, null=True)
-    pedido = models.ForeignKey('Pedido', on_delete=models.SET_NULL, null=True)
+    producto = models.ForeignKey('Producto', on_delete=models.CASCADE)
+    pedido = models.ForeignKey('Pedido', on_delete=models.CASCADE)
 
     # Atributos
-    cantidad = models.IntegerField()
-    subtotal = models.FloatField()
+    cantidad = models.IntegerField(blank=True, null=True)
 
-    # Metodos
-    def subtotal_final(self):
-        return self.cantidad * self.producto.precio
+    def __str__(self):
+        return f'{self.pedido.id} - {self.cantidad} x {self.producto.nombre}'
+
+    def get_subtotal(self):
+        return self.producto.get_precio_final() * self.cantidad
 
 class Profile(models.Model):
     # Relacion con el modelo User de Django

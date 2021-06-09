@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <p><u><h3 class="title"> Checkout </h3></u></p>
+    <div class="block">
+        <h5 class="subtitle"> Completa los datos del pedido: </h5>
+        <form method="post">
+          {% csrf_token %}
+          {{ form.as_p }}
+            <hr>
+          <input type="submit" value="Submit" class="button is-info">
+        </form>
+    </div>
+    <hr>
+    <div class="content">
+        <p><u><a href="{% url 'pedido-detail' %}">Volver al Carrito</a></u></p>
+        <p><u><a href="{% url 'product-list' %}">Volver a la lista de productos</a></u></p>
+        <p><u><a href="{% url 'home' %}">Volver a inicio</a></u></p>
+    </div>
+
+{% endblock %}

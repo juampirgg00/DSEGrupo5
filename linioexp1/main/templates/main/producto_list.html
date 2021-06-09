@@ -1,16 +1,21 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
+
   <head>
     <meta charset="utf-8">
     <title> LinioExp </title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
   </head>
+
   <body>
-    <h1> LINIO EXPRESS </h1>
+  <section class="section">
+    <div class="container">
+    <h1 class="title is-1"> LINIO EXPRESS </h1>
     {% if user.is_authenticated %}
-    <h4> ¡Bienvenido/a, {{  user.get_username }}! </h4>
+    <h1 class="title is-4"> ¡Bienvenido/a, {{  user.get_username }}! </h1>
     {% endif %}
     <hr>
-    <h2> Productos </h2>
+    <p><u><h1 class="title is-4"> Productos </h1></u></p>
     <ul>
       {% for producto in object_list %}
         <li>
@@ -25,7 +30,10 @@
     </ul>
     <hr>
 
-    <a href="{% url 'home' %}">Volver a inicio</a>
+    <u><a href="{% url 'home' %}">Volver a inicio</a></u>
+    </div>
+  </section>
 
   </body>
+
 </html>

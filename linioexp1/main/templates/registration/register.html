@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<h2> Registro de Usuario </h2>
+<h1 class="title is-4"> Registro de Usuario </h1>
 
 <form method="post">
     {% csrf_token %}
@@ -12,6 +12,6 @@
 
 <hr>
 
-<a href="{% url 'home' %}">Volver a inicio</a>
+<u><a href="{% url 'home' %}">Volver a inicio</a></u>
 
 {% endblock %}
