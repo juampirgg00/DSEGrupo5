@@ -8,9 +8,13 @@
   </head>
 
   <body>
+
+  <body background="fondo.png" bgcolor="AAAAAA">
+
   <section class="section">
     <div class="container">
-    <h1 class="title is-1"> LINIO EXPRESS </h1>
+    <u><h1 class="title is-1"> LINIO EXPRESS </h1></u>
+    &nbsp
     {% if user.is_authenticated %}
     <h1 class="title is-4"> ¡Bienvenido/a, {{  user.get_username }}! </h1>
     {% endif %}
@@ -25,31 +29,33 @@
     </div>
 
     &nbsp
-
-    <div class="columns is-multiline">
-        {% for producto in object_list %}
-            <div class="column is-2">
-                <div class="card">
-                    <div class="card-image">
-                        <figure class="image">
-                            <img src="{{ producto.images.first.image.url|default:'https://via.placeholder.com/128' }}" alt="Imagen no disponible">
-                        </figure>
-                    </div>
-                    <div class="card-content">
-                        <h6>
-                            <a href="{% url 'product-detail' producto.pk %}">
-                                {{ producto.nombre }}
-                            </a>
-                        </h6>
-                        <p>$ {{ producto.precio }}</p>
+    <div class="container">
+        <div class="columns is-multiline">
+            {% for producto in object_list %}
+                <div class="column is-2">
+                    <div class="card">
+                        <img src="https://caphome.cl/wp-content/uploads/2018/10/Logo-Linio.jpg" alt="Avatar" class='image'>
+                        <div class="card-image">
+                            <figure class="image">
+                                <img src="{{ producto.images.first.image.url|default:'https://via.placeholder.com/128' }}" alt="Imagen no disponible">
+                            </figure>
+                        </div>
+                        <div class="card-content">
+                            <h6>
+                                <a href="{% url 'product-detail' producto.pk %}">
+                                    {{ producto.nombre }}
+                                </a>
+                            </h6>
+                            <p>$ {{ producto.precio }}</p>
+                        </div>
                     </div>
                 </div>
-            </div>
-        {% empty %}
-            <div class="content">
-                <h6>Aun no hay productos disponibles.</h6>
-            </div>
-        {% endfor %}
+            {% empty %}
+                <div class="content">
+                    <h6>Aun no hay productos disponibles.</h6>
+                </div>
+            {% endfor %}
+        </div>
     </div>
 
     <div class="container">

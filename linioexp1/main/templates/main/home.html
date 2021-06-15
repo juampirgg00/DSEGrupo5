@@ -33,18 +33,30 @@
     </div>
 
     <p><u><h1 class="title is-5"> Últimos Lanzamientos: </h1></u></p>
-    <ul>
+
+    <div class="columns is-multiline">
       {% for producto in latest_products %}
-        <li>
-          <a href="{% url 'product-detail' producto.pk %}">
-            {{ producto.nombre }}
-          </a>
-          - {{ producto.precio }}
-        </li>
+        <div class="column is-2">
+            <div class="card">
+                <div class="card-image">
+                    <figure class="image">
+                        <img src="{{ producto.images.first.image.url|default:'https://via.placeholder.com/128' }}" alt="Imagen no disponible">
+                    </figure>
+                </div>
+                <div class="card-content">
+                    <h6>
+                        <a href="{% url 'product-detail' producto.pk %}">
+                            {{ producto.nombre }}
+                        </a>
+                    </h6>
+                    <p>$ {{ producto.precio }}</p>
+                </div>
+            </div>
+        </div>
       {% empty %}
         <li>Aun no hay productos disponibles.</li>
       {% endfor %}
-    </ul>
+    </div>
 
     <hr>
 
