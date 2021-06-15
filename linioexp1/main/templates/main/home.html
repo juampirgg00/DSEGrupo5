@@ -26,6 +26,12 @@
         <hr>
     {% endif %}
 
+    <div class="content">
+        <form action="{% url 'product-list' %}" method="get">
+            <input class="input is-rounded" type="text" name="q" placeholder="Busca tu producto...">
+        </form>
+    </div>
+
     <p><u><h1 class="title is-5"> Últimos Lanzamientos: </h1></u></p>
     <ul>
       {% for producto in latest_products %}

@@ -26,6 +26,10 @@ class Producto(models.Model):
     def __str__(self):
         return self.nombre
 
+class ProductoImage(models.Model):
+    product = models.ForeignKey('Producto', on_delete=models.CASCADE, related_name='images')
+    image = models.ImageField(upload_to="products", null=True, blank=True)
+
 class Proveedor(models.Model):
     # Atributos
     ruc = models.CharField(max_length=11)
